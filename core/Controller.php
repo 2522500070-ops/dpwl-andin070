@@ -3,8 +3,8 @@ class Controller
 {
     public function __construct()
     {
-        $this->load = new class
-        {
+        $this->session = new session();
+        $this->load = new class {
             public function view($viewName, $data = [])
             {
                 if (!empty($data)) extract($data);
