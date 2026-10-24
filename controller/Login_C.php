@@ -3,30 +3,23 @@ class Login_C extends Controller
 {
     public function index()
     {
-        $sisipn['psn'] = $this->session->set_flashdata('pesan');
-        $this->load->view('login', $sisipn);
+        $isipsn['psn'] = $this->session->set_flashdata('pesan');
+        $this->load->view('login', $isipsn);
     }
 
-   
-public function CekLogin()
-{
-    $email = $this->load->post('email');
-    $password = $this->load->post('password');
-    $cekdata = $this->load->model('Login_M');
-    $datauser = $cekdata->ambildata($email);
-
-    if ($datauser && $password === $datauser['password']) {
-        $this->session->set_userdata('emailuser', $email);
-
-        redirect('Admin_C/index');
-    } else {
-        $this->session->set_flashdata(
-            'pesan',
-            'Gagal: Silahkan cek email, password, atau status akun Anda...'
-        );
-
-        redirect('Login_C/index');
+    public function CekLogin()
+    {
+        $email = $this->load->post('email');
+        $password = $this->load->post('pass');
+        $cekdata = $this->load->model('Login_M');
+        $datauser = $cekdata->ambildata($email);
+        if ($datauser && password_verify($password, $datauser['password'])) {
+            $this->session->set_userdata('emailuser', $email);
+            $this->session->set_flashdata('pesan', 'Login berhasil sebagai ' . $this->session->userdata('emailuser'));
+            redirect('Admin_C/index');
+        } else {
+            $this->session->set_flashdata('pesan', 'Gagal: Silahkan cek email, password, atau status akun Anda...');
+            redirect('login_c/index');
+        }
     }
-}
-
 }
