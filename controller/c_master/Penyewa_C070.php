@@ -1,4 +1,3 @@
-
 <?php
 class Penyewa_C070 extends Controller
 {

@@ -1,4 +1,3 @@
-
 <?php
 class Penyewa_M070 extends Model
 {
