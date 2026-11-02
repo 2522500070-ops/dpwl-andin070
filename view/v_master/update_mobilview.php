@@ -1,3 +1,4 @@
+
 <?php
 $m = $mobil;
 ?>
@@ -6,7 +7,7 @@ $m = $mobil;
 
     <section class="content-header">
         <div class="container-fluid">
-            <h1>Edit Data Mobil</h1>
+            <h1>Update Data Mobil</h1>
         </div>
     </section>
 
@@ -15,11 +16,11 @@ $m = $mobil;
 
             <div class="card card-warning">
                 <div class="card-header">
-                    <h3 class="card-title">Form Edit Mobil</h3>
+                    <h3 class="card-title">Form Update Mobil</h3>
                 </div>
 
                 <form
-                    action="<?= base_url('?url=Mobil_C/update_mobil') ?>"
+                    action="<?= base_url('?url=Mobil_C/UpdateMobil') ?>"
                     method="post"
                     enctype="multipart/form-data">
 
@@ -37,6 +38,7 @@ $m = $mobil;
                                 name="no_plat"
                                 class="form-control"
                                 value="<?= htmlspecialchars($m['no_plat']) ?>"
+                                readonly
                                 required>
                         </div>
 
@@ -80,12 +82,37 @@ $m = $mobil;
 
                         <div class="form-group">
                             <label>Jenis Mobil</label>
-                            <input
-                                type="text"
+                            <select
                                 name="jns_mobil"
                                 class="form-control"
-                                value="<?= htmlspecialchars($m['jns_mobil']) ?>"
                                 required>
+
+                                <option value="Minibus"
+                                    <?= $m['jns_mobil'] === 'Minibus' ? 'selected' : '' ?>>
+                                    Minibus
+                                </option>
+
+                                <option value="Kijang"
+                                    <?= $m['jns_mobil'] === 'Kijang' ? 'selected' : '' ?>>
+                                    Kijang
+                                </option>
+
+                                <option value="Sedan"
+                                    <?= $m['jns_mobil'] === 'Sedan' ? 'selected' : '' ?>>
+                                    Sedan
+                                </option>
+
+                                <option value="SUV"
+                                    <?= $m['jns_mobil'] === 'SUV' ? 'selected' : '' ?>>
+                                    SUV
+                                </option>
+
+                                <option value="MPV"
+                                    <?= $m['jns_mobil'] === 'MPV' ? 'selected' : '' ?>>
+                                    MPV
+                                </option>
+
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -94,18 +121,22 @@ $m = $mobil;
                                 name="transmisi"
                                 class="form-control"
                                 required>
+
                                 <option value="Manual"
                                     <?= $m['transmisi'] === 'Manual' ? 'selected' : '' ?>>
                                     Manual
                                 </option>
+
                                 <option value="Automatic"
                                     <?= $m['transmisi'] === 'Automatic' ? 'selected' : '' ?>>
                                     Automatic
                                 </option>
+
                                 <option value="Matic"
                                     <?= $m['transmisi'] === 'Matic' ? 'selected' : '' ?>>
                                     Matic
                                 </option>
+
                             </select>
                         </div>
 
@@ -123,6 +154,7 @@ $m = $mobil;
 
                         <div class="form-group">
                             <label>Foto Depan</label>
+
                             <?php if (!empty($m['ft_depan'])) : ?>
                                 <div class="mb-2">
                                     <img
@@ -131,11 +163,13 @@ $m = $mobil;
                                         style="width:150px; height:auto;">
                                 </div>
                             <?php endif; ?>
+
                             <input
                                 type="file"
                                 name="ft_depan"
                                 class="form-control-file"
                                 accept=".jpg,.jpeg,.png">
+
                             <small class="text-muted">
                                 Kosongkan jika tidak ingin mengganti foto.
                             </small>
@@ -143,6 +177,7 @@ $m = $mobil;
 
                         <div class="form-group">
                             <label>Foto Belakang</label>
+
                             <?php if (!empty($m['ft_blkg'])) : ?>
                                 <div class="mb-2">
                                     <img
@@ -151,11 +186,13 @@ $m = $mobil;
                                         style="width:150px; height:auto;">
                                 </div>
                             <?php endif; ?>
+
                             <input
                                 type="file"
                                 name="ft_blkg"
                                 class="form-control-file"
                                 accept=".jpg,.jpeg,.png">
+
                             <small class="text-muted">
                                 Kosongkan jika tidak ingin mengganti foto.
                             </small>
@@ -163,6 +200,7 @@ $m = $mobil;
 
                         <div class="form-group">
                             <label>Foto Interior</label>
+
                             <?php if (!empty($m['ft_interior'])) : ?>
                                 <div class="mb-2">
                                     <img
@@ -171,11 +209,13 @@ $m = $mobil;
                                         style="width:150px; height:auto;">
                                 </div>
                             <?php endif; ?>
+
                             <input
                                 type="file"
                                 name="ft_interior"
                                 class="form-control-file"
                                 accept=".jpg,.jpeg,.png">
+
                             <small class="text-muted">
                                 Kosongkan jika tidak ingin mengganti foto.
                             </small>
@@ -198,7 +238,7 @@ $m = $mobil;
                             <textarea
                                 name="cttn_unit"
                                 class="form-control"
-                                rows="3"><?= htmlspecialchars($m['cttn_unit']) ?></textarea>
+                                rows="3"><?= htmlspecialchars($m['cttn_unit'] ?? '') ?></textarea>
                         </div>
 
                         <div class="form-group">
@@ -207,18 +247,27 @@ $m = $mobil;
                                 name="status_unit"
                                 class="form-control"
                                 required>
+
                                 <option value="Tersedia"
                                     <?= $m['status_unit'] === 'Tersedia' ? 'selected' : '' ?>>
                                     Tersedia
                                 </option>
-                                <option value="Disewa"
-                                    <?= $m['status_unit'] === 'Disewa' ? 'selected' : '' ?>>
-                                    Disewa
+
+                                <option value="Aktif"
+                                    <?= $m['status_unit'] === 'Aktif' ? 'selected' : '' ?>>
+                                    Aktif
                                 </option>
+
                                 <option value="Perawatan"
                                     <?= $m['status_unit'] === 'Perawatan' ? 'selected' : '' ?>>
                                     Perawatan
                                 </option>
+
+                                <option value="Disewa"
+                                    <?= $m['status_unit'] === 'Disewa' ? 'selected' : '' ?>>
+                                    Disewa
+                                </option>
+
                             </select>
                         </div>
 

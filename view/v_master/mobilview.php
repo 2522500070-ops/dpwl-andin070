@@ -58,20 +58,33 @@
                                         <td><?= htmlspecialchars($m['transmisi']) ?></td>
                                         <td><?= htmlspecialchars($m['thn_buat']) ?></td>
 
+                                        <!-- Foto depan, belakang, dan interior -->
                                         <td style="min-width:120px;">
                                             <?php
-                                            foreach (
-                                                ['ft_depan', 'ft_blkg', 'ft_interior'] as $field
-                                            ) :
+                                            $labelFoto = [
+                                                'ft_depan' => 'Foto Depan',
+                                                'ft_blkg' => 'Foto Belakang',
+                                                'ft_interior' => 'Foto Interior'
+                                            ];
+
+                                            foreach ($labelFoto as $field => $label) :
                                                 $namaFoto = $m[$field] ?? '';
 
                                                 if ($namaFoto !== '') :
+                                                    $urlFoto = base_url(
+                                                        'img/' . rawurlencode(basename($namaFoto))
+                                                    );
                                             ?>
-                                                <img
-                                                    src="<?= base_url('img/' . rawurlencode(basename($namaFoto))) ?>"
-                                                    alt="Foto Mobil"
-                                                    style="width:100px;height:auto;margin-bottom:5px;border-radius:5px;">
-                                                <br>
+                                                <div class="mb-2">
+                                                    <small><?= $label ?></small>
+                                                    <br>
+                                                    <img
+                                                        src="<?= htmlspecialchars($urlFoto, ENT_QUOTES) ?>"
+                                                        alt="<?= $label ?>"
+                                                        class="foto-mobil"
+                                                        onclick="perbesarFoto(this)"
+                                                        style="width:100px;height:auto;margin-bottom:5px;border-radius:5px;cursor:zoom-in;">
+                                                </div>
                                             <?php
                                                 endif;
                                             endforeach;
@@ -92,13 +105,13 @@
 
                                         <td style="min-width:100px;">
                                             <a
-                                                href="<?= base_url('?url=Mobil_C/edit_mobil&no_plat=' . urlencode($m['no_plat'])) ?>"
+                                                href="<?= base_url('?url=Mobil_C/edit&no_plat=' . urlencode($m['no_plat'])) ?>"
                                                 class="btn btn-warning btn-sm mb-1">
                                                 <i class="fas fa-edit"></i> Edit
                                             </a>
 
                                             <form
-                                                action="<?= base_url('?url=Mobil_C/hapus_mobil') ?>"
+                                                action="<?= base_url('?url=Mobil_C/hapus') ?>"
                                                 method="post"
                                                 style="display:inline;"
                                                 onsubmit="return confirm('Yakin ingin menghapus data mobil <?= htmlspecialchars($m['no_plat'], ENT_QUOTES) ?>? Data yang dihapus tidak dapat dikembalikan.');">
@@ -133,6 +146,49 @@
         </div>
     </section>
 </div>
+
+<!-- Modal untuk memperbesar foto -->
+<div id="modalFoto"
+     style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.85);text-align:center;padding:40px 15px;box-sizing:border-box;"
+     onclick="tutupFoto()">
+
+    <span
+        style="position:absolute;top:15px;right:30px;color:white;font-size:40px;font-weight:bold;cursor:pointer;"
+        onclick="tutupFoto()">&times;</span>
+
+    <img id="gambarBesar"
+         src=""
+         alt="Foto Mobil Diperbesar"
+         style="max-width:95%;max-height:85vh;object-fit:contain;margin-top:20px;border-radius:5px;"
+         onclick="event.stopPropagation()">
+
+    <p id="judulFoto" style="color:white;margin-top:10px;"></p>
+</div>
+
+<script>
+    function perbesarFoto(gambar) {
+        var modal = document.getElementById('modalFoto');
+        var gambarBesar = document.getElementById('gambarBesar');
+        var judulFoto = document.getElementById('judulFoto');
+
+        gambarBesar.src = gambar.src;
+        gambarBesar.alt = gambar.alt;
+        judulFoto.textContent = gambar.alt;
+
+        modal.style.display = 'block';
+    }
+
+    function tutupFoto() {
+        document.getElementById('modalFoto').style.display = 'none';
+        document.getElementById('gambarBesar').src = '';
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            tutupFoto();
+        }
+    });
+</script>
 
 <aside class="control-sidebar control-sidebar-dark">
     <div class="p-3">

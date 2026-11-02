@@ -57,6 +57,19 @@ class Mobil_M extends Model
         return $sql->execute();
     }
 
+    // Mengambil detail data mobil berdasarkan nomor plat
+    public function detailmobil($no_plat)
+    {
+        $sql = $this->db->prepare(
+            "SELECT * FROM mobil WHERE no_plat = ?"
+        );
+
+        $sql->bind_param("s", $no_plat);
+        $sql->execute();
+
+        return $sql->get_result()->fetch_assoc();
+    }
+
     // Mengambil satu data mobil
     public function ambilmobil($no_plat)
     {
@@ -112,6 +125,12 @@ class Mobil_M extends Model
         return $sql->execute();
     }
 
+    // Fungsi memperbarui data mobil sesuai materi PPT
+    public function UpdateMobil($data, $no_plat_lama)
+    {
+        return $this->update($data, $no_plat_lama);
+    }
+
     // Menghapus data mobil
     public function hapus($no_plat)
     {
@@ -122,5 +141,11 @@ class Mobil_M extends Model
         $sql->bind_param("s", $no_plat);
 
         return $sql->execute();
+    }
+
+    // Fungsi menghapus data mobil sesuai materi PPT
+    public function HapusDtMobil($no_plat)
+    {
+        return $this->hapus($no_plat);
     }
 }

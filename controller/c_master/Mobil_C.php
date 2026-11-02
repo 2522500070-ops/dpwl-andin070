@@ -34,8 +34,8 @@ class Mobil_C extends Controller
         $this->load->view('layout/footer');
     }
 
-    // Form edit mobil
-    public function edit_mobil()
+    // Form edit mobil sesuai materi PPT
+    public function edit()
     {
         $no_plat = $this->load->get('no_plat');
 
@@ -45,7 +45,7 @@ class Mobil_C extends Controller
         }
 
         $model = $this->load->model('m_master/Mobil_M');
-        $data['mobil'] = $model->ambilmobil($no_plat);
+        $data['mobil'] = $model->detailmobil($no_plat);
 
         if (!$data['mobil']) {
             $this->pesanKembali('Data mobil tidak ditemukan!');
@@ -60,7 +60,7 @@ class Mobil_C extends Controller
 
         $this->load->view('layout/header');
         $this->load->view('layout/sidebar', $info);
-        $this->load->view('v_master/edit_mobilview', $data);
+        $this->load->view('v_master/update_mobilview', $data);
         $this->load->view('layout/footer');
     }
 
@@ -122,8 +122,8 @@ class Mobil_C extends Controller
         }
     }
 
-    // Memperbarui data mobil
-    public function update_mobil()
+    // Memperbarui data mobil sesuai materi PPT
+    public function UpdateMobil()
     {
         $no_plat_lama = trim(
             $this->load->post('no_plat_lama')
@@ -148,7 +148,7 @@ class Mobil_C extends Controller
             return;
         }
 
-        $mobilLama = $model->ambilmobil($no_plat_lama);
+        $mobilLama = $model->detailmobil($no_plat_lama);
 
         if (!$mobilLama) {
             $this->pesanKembali('Data mobil tidak ditemukan!');
@@ -194,7 +194,7 @@ class Mobil_C extends Controller
             'status_unit' => $this->load->post('status_unit')
         ];
 
-        if ($model->update($data, $no_plat_lama)) {
+        if ($model->UpdateMobil($data, $no_plat_lama)) {
             redirect('Mobil_C/index');
         } else {
             $this->pesanKembali('Data mobil gagal diperbarui!');
@@ -202,7 +202,7 @@ class Mobil_C extends Controller
     }
 
     // Menghapus mobil dan foto terkait
-    public function hapus_mobil()
+    public function hapus()
     {
         $no_plat = trim($this->load->post('no_plat'));
 
@@ -212,14 +212,14 @@ class Mobil_C extends Controller
         }
 
         $model = $this->load->model('m_master/Mobil_M');
-        $mobil = $model->ambilmobil($no_plat);
+        $mobil = $model->detailmobil($no_plat);
 
         if (!$mobil) {
             $this->pesanKembali('Data mobil tidak ditemukan!');
             return;
         }
 
-        if ($model->hapus($no_plat)) {
+        if ($model->HapusDtMobil($no_plat)) {
             $folder = dirname(__DIR__, 2) . '/img/';
 
             foreach (
@@ -242,6 +242,17 @@ class Mobil_C extends Controller
                 'Data gagal dihapus! Periksa relasi database.'
             );
         }
+    }
+
+    // Logout
+    public function keluar()
+    {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $_SESSION = [];
+            session_destroy();
+        }
+
+        redirect('Login_C/index');
     }
 
     // Upload foto JPG, JPEG, atau PNG

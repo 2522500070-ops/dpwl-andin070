@@ -116,7 +116,9 @@
 
                 <!-- 4. MENU LOGOUT -->
                 <li class="nav-item">
-                    <a href="<?= base_url('Login_C/index') ?>" class="nav-link">
+                    <a href="<?= base_url('?url=Mobil_C/keluar') ?>"
+                       class="nav-link"
+                       onclick="return confirm('Apakah Anda yakin ingin logout?');">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Logout
