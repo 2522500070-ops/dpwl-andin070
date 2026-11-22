@@ -1,9 +1,17 @@
 <?php
 spl_autoload_register(function ($namacontroller) {
-    $paths = ['controller/', 'model/', 'config/', 'core/', 'controller/c_master/'];
+    $paths = [
+        'controller/',
+        'model/',
+        'config/',
+        'core/',
+        'controller/c_master/',
+        'controller/c_shop/'
+    ];
 
     foreach ($paths as $path) {
         $file = $path . $namacontroller . '.php';
+
         if (file_exists($file)) {
             require_once $file;
             return;
